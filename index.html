@@ -3,36 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neblina App - Deep Links</title>
+    <title>Neblina App</title>
+    <script>
+        // URLs das lojas
+        const APP_STORE_URL = "https://apps.apple.com/br/app/6547834238";
+        const PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=tita.elefantesnaneblina";
+        
+        // Timer para verificar se o app abriu
+        let redirectTimer;
+        
+        // Função que detecta o sistema e inicia o redirecionamento
+        function checkPlatformAndRedirect() {
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            
+            // Capturar parâmetros da URL para passar para o app
+            const urlParams = window.location.search;
+            const path = window.location.pathname;
+            
+            // Verificar se é iOS
+            if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+                // Tentar abrir o app (Universal Link já fará isso automaticamente)
+                redirectTimer = setTimeout(function() {
+                    // Se chegamos aqui, provavelmente o app não está instalado
+                    window.location.href = APP_STORE_URL;
+                }, 2000);
+            } 
+            // Verificar se é Android
+            else if (/android/i.test(userAgent)) {
+                // Tentar abrir o app (App Link já fará isso automaticamente)
+                redirectTimer = setTimeout(function() {
+                    // Se chegamos aqui, provavelmente o app não está instalado
+                    window.location.href = PLAY_STORE_URL;
+                }, 2000);
+            } 
+            // Outros dispositivos (desktop, etc)
+            else {
+                // Mostrar os links para as lojas
+                document.getElementById("store-links").style.display = "block";
+            }
+        }
+        
+        // Limpar o timer se o app foi aberto (página perde o foco)
+        function clearRedirectTimer() {
+            if (redirectTimer) {
+                clearTimeout(redirectTimer);
+            }
+        }
+        
+        // Iniciar quando a página carregar
+        window.onload = checkPlatformAndRedirect;
+        
+        // Limpar timer se a página perder o foco (significa que o app abriu)
+        window.onblur = clearRedirectTimer;
+    </script>
     <style>
         body {
             font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
+            text-align: center;
             padding: 20px;
-            line-height: 1.6;
         }
-        h1 {
-            color: #333;
+        #store-links {
+            display: none;
+            margin-top: 30px;
         }
-        .container {
-            border: 1px solid #ddd;
-            padding: 20px;
+        .store-button {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px 20px;
+            background-color: #4285f4;
+            color: white;
+            text-decoration: none;
             border-radius: 5px;
-            margin-top: 20px;
         }
     </style>
 </head>
 <body>
-    <h1>Neblina App - Página de Deep Links</h1>
-    <div class="container">
-        <p>Esta página é usada para configuração de Universal Links (iOS) e App Links (Android) para o aplicativo Neblina.</p>
-        <p>Os arquivos de configuração estão disponíveis em:</p>
-        <ul>
-            <li><a href="/apple-app-site-association">Apple App Site Association</a></li>
-            <li><a href="/.well-known/apple-app-site-association">Apple App Site Association (.well-known)</a></li>
-            <li><a href="/.well-known/assetlinks.json">Android Asset Links</a></li>
-        </ul>
+    <h1>Neblina App</h1>
+    <p>Redirecionando para o aplicativo...</p>
+    
+    <div id="store-links">
+        <p>Baixe nosso aplicativo:</p>
+        <a href="https://apps.apple.com/br/app/6547834238" class="store-button">App Store</a>
+        <a href="https://play.google.com/store/apps/details?id=tita.elefantesnaneblina" class="store-button">Google Play</a>
     </div>
 </body>
 </html>
