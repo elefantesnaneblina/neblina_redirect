@@ -3,88 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neblina App</title>
-    <script>
-        // URLs das lojas
-        const APP_STORE_URL = "https://apps.apple.com/br/app/6547834238";
-        const PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=tita.elefantesnaneblina";
-        
-        // Timer para verificar se o app abriu
-        let redirectTimer;
-        
-        // Função que detecta o sistema e inicia o redirecionamento
-        function checkPlatformAndRedirect() {
-            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-            
-            // Capturar parâmetros da URL para passar para o app
-            const urlParams = window.location.search;
-            const path = window.location.pathname;
-            
-            // Verificar se é iOS
-            if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-                // Tentar abrir o app (Universal Link já fará isso automaticamente)
-                redirectTimer = setTimeout(function() {
-                    // Se chegamos aqui, provavelmente o app não está instalado
-                    window.location.href = APP_STORE_URL;
-                }, 2000);
-            } 
-            // Verificar se é Android
-            else if (/android/i.test(userAgent)) {
-                // Tentar abrir o app (App Link já fará isso automaticamente)
-                redirectTimer = setTimeout(function() {
-                    // Se chegamos aqui, provavelmente o app não está instalado
-                    window.location.href = PLAY_STORE_URL;
-                }, 2000);
-            } 
-            // Outros dispositivos (desktop, etc)
-            else {
-                // Mostrar os links para as lojas
-                document.getElementById("store-links").style.display = "block";
-            }
-        }
-        
-        // Limpar o timer se o app foi aberto (página perde o foco)
-        function clearRedirectTimer() {
-            if (redirectTimer) {
-                clearTimeout(redirectTimer);
-            }
-        }
-        
-        // Iniciar quando a página carregar
-        window.onload = checkPlatformAndRedirect;
-        
-        // Limpar timer se a página perder o foco (significa que o app abriu)
-        window.onblur = clearRedirectTimer;
-    </script>
+    <title>Teste Universal Links/App Links</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
             padding: 20px;
+            line-height: 1.6;
+            text-align: center;
         }
-        #store-links {
-            display: none;
-            margin-top: 30px;
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
         }
-        .store-button {
+        p {
+            margin-bottom: 15px;
+        }
+        .test-link {
             display: inline-block;
             margin: 10px;
-            padding: 10px 20px;
+            padding: 12px 20px;
             background-color: #4285f4;
             color: white;
             text-decoration: none;
             border-radius: 5px;
+            font-weight: bold;
+        }
+        .info {
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #f5f5f5;
+            border-radius: 8px;
         }
     </style>
 </head>
 <body>
-    <h1>Neblina App</h1>
-    <p>Redirecionando para o aplicativo...</p>
+    <h1>Teste de Universal Links / App Links</h1>
     
-    <div id="store-links">
-        <p>Baixe nosso aplicativo:</p>
-        <a href="https://apps.apple.com/br/app/6547834238" class="store-button">App Store</a>
-        <a href="https://play.google.com/store/apps/details?id=tita.elefantesnaneblina" class="store-button">Google Play</a>
+    <p>Esta é uma página de teste para verificar se os Universal Links (iOS) e App Links (Android) estão funcionando corretamente.</p>
+    
+    <p>Se o app estiver configurado corretamente, clicar nos links abaixo deve abrir o app automaticamente.</p>
+    
+    <div>
+        <a href="https://redirect.neblina.app/contentMain" class="test-link">Content Main</a>
+        <a href="https://redirect.neblina.app" class="test-link">Home</a>
+    </div>
+    
+    <div class="info">
+        <p><strong>Para iOS:</strong> Tente pressionar e segurar o link para ver se aparece a opção "Abrir no app Neblina".</p>
+        <p><strong>Para Android:</strong> Ao clicar, o app deve abrir automaticamente se a configuração estiver correta.</p>
+    </div>
+    
+    <div class="info">
+        <p>Se os links não funcionarem, verifique:</p>
+        <ul style="text-align: left;">
+            <li>Se o app está instalado a partir do TestFlight/Google Play Testes</li>
+            <li>Se os arquivos de configuração estão corretos (apple-app-site-association e assetlinks.json)</li>
+            <li>Se as configurações no Info.plist e AndroidManifest.xml estão corretas</li>
+        </ul>
     </div>
 </body>
 </html>
