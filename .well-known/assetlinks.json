@@ -1,8 +1,15 @@
-[{
-  "relation": ["delegate_permission/common.handle_all_urls"],
-  "target": {
-    "namespace": "android_app",
-    "package_name": "tita.elefantesnaneblina",
-    "sha256_cert_fingerprints": ["78:40:1C:16:7E:7D:43:D7:BB:3D:11:92:6F:6C:83:A9:17:80:D8:51:B6:9D:7A:BF:C6:DE:09:29:86:FF:76:C0"]
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls",
+      "delegate_permission/common.get_login_creds"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "tita.elefantesnaneblina",
+      "sha256_cert_fingerprints": [
+        "78:40:1C:16:7E:7D:43:D7:BB:3D:11:92:6F:6C:83:A9:17:80:D8:51:B6:9D:7A:BF:C6:DE:09:29:86:FF:76:C0"
+      ]
+    }
   }
-}]
+]
