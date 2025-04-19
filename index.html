@@ -3,65 +3,169 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teste Universal Links/App Links</title>
+    <title>Neblina App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            line-height: 1.6;
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Lato', sans-serif;
+            color: white;
             text-align: center;
         }
+        .container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background: linear-gradient(to bottom, #001D3D, #0061AA);
+        }
+        .logo {
+            width: 120px;
+            margin-bottom: 30px;
+        }
         h1 {
-            color: #333;
-            margin-bottom: 20px;
+            font-size: 20px;
+            margin-bottom: 30px;
+            font-weight: normal;
+            line-height: 1.4;
         }
-        p {
-            margin-bottom: 15px;
-        }
-        .test-link {
-            display: inline-block;
-            margin: 10px;
-            padding: 12px 20px;
-            background-color: #4285f4;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
+        .open-btn {
+            background-color: #FCC900;
+            color: #001D3D;
+            border: none;
+            border-radius: 30px;
+            padding: 12px 25px;
+            font-size: 16px;
             font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            margin-bottom: 40px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
-        .info {
-            margin-top: 30px;
-            padding: 15px;
-            background-color: #f5f5f5;
-            border-radius: 8px;
+        .open-btn svg {
+            margin-left: 8px;
+        }
+        .divider {
+            width: 100%;
+            max-width: 300px;
+            height: 1px;
+            background-color: rgba(255,255,255,0.2);
+            margin: 10px 0 30px;
+        }
+        .no-app-text {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        .download-text {
+            font-size: 14px;
+            margin-bottom: 20px;
+            opacity: 0.8;
+        }
+        .store-btns {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+            max-width: 230px;
+        }
+        .store-btn {
+            border: 1px solid white;
+            border-radius: 5px;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: white;
+        }
+        .store-btn img {
+            height: 24px;
         }
     </style>
+    <script>
+        // URLs das lojas
+        const APP_STORE_URL = "https://apps.apple.com/br/app/6547834238";
+        const PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=tita.elefantesnaneblina";
+        
+        // Timer para verificar se o app abriu
+        let redirectTimer;
+        
+        // Função para tentar abrir o app
+        function tryOpenApp() {
+            // Limpar qualquer timer existente
+            if (redirectTimer) {
+                clearTimeout(redirectTimer);
+            }
+            
+            // Tenta abrir o app com a URL atual
+            const currentUrl = window.location.href;
+            window.location.href = currentUrl;
+            
+            // O timer só vai executar se o app não abrir (não perder o foco)
+            redirectTimer = setTimeout(handleAppNotInstalled, 1500);
+        }
+        
+        // Função para lidar com o caso do app não estar instalado
+        function handleAppNotInstalled() {
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            
+            // Redireciona para a loja apropriada
+            if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+                window.location.href = APP_STORE_URL;
+            } else if (/android/i.test(userAgent)) {
+                window.location.href = PLAY_STORE_URL;
+            }
+            // Para desktop, a página já mostra os links das lojas
+        }
+        
+        // Configura eventos quando a página carregar
+        window.onload = function() {
+            // Primeiro tenta abrir o app automaticamente
+            tryOpenApp();
+            
+            // Configura o botão para tentar novamente
+            document.getElementById('openAppBtn').addEventListener('click', tryOpenApp);
+            
+            // Se a página perder o foco, o app provavelmente abriu
+            window.onblur = function() {
+                if (redirectTimer) {
+                    clearTimeout(redirectTimer);
+                }
+            };
+        };
+    </script>
 </head>
 <body>
-    <h1>Teste de Universal Links / App Links</h1>
-    
-    <p>Esta é uma página de teste para verificar se os Universal Links (iOS) e App Links (Android) estão funcionando corretamente.</p>
-    
-    <p>Se o app estiver configurado corretamente, clicar nos links abaixo deve abrir o app automaticamente.</p>
-    
-    <div>
-        <a href="https://redirect.neblina.app/contentMain" class="test-link">Content Main</a>
-        <a href="https://redirect.neblina.app" class="test-link">Home</a>
-    </div>
-    
-    <div class="info">
-        <p><strong>Para iOS:</strong> Tente pressionar e segurar o link para ver se aparece a opção "Abrir no app Neblina".</p>
-        <p><strong>Para Android:</strong> Ao clicar, o app deve abrir automaticamente se a configuração estiver correta.</p>
-    </div>
-    
-    <div class="info">
-        <p>Se os links não funcionarem, verifique:</p>
-        <ul style="text-align: left;">
-            <li>Se o app está instalado a partir do TestFlight/Google Play Testes</li>
-            <li>Se os arquivos de configuração estão corretos (apple-app-site-association e assetlinks.json)</li>
-            <li>Se as configurações no Info.plist e AndroidManifest.xml estão corretas</li>
-        </ul>
+    <div class="container">
+        <img class="logo" src="https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/elefantes-na-neblina-9htnk0/assets/kmn08jkrskvr/teste-2_1.png" alt="Neblina Logo">
+        
+        <h1>Abra o conteúdo no aplicativo<br>Neblina</h1>
+        
+        <button id="openAppBtn" class="open-btn">
+            Abrir no app
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="#001D3D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </button>
+        
+        <div class="divider"></div>
+        
+        <p class="no-app-text">Não possui o app Neblina?</p>
+        <p class="download-text">Baixe agora!</p>
+        
+        <div class="store-btns">
+            <a href="https://play.google.com/store/apps/details?id=tita.elefantesnaneblina" class="store-btn">
+                <img src="https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/elefantes-na-neblina-9htnk0/assets/6rwak1yylmtb/play_store.svg" alt="Google Play">
+            </a>
+            <a href="https://apps.apple.com/br/app/6547834238" class="store-btn">
+                <img src="https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/elefantes-na-neblina-9htnk0/assets/0c6un0swj6og/app_store.svg" alt="App Store">
+            </a>
+        </div>
     </div>
 </body>
 </html>
