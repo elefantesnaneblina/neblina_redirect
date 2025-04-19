@@ -3,9 +3,23 @@
     "apps": [],
     "details": [
       {
-        "appID": "666CW7NGXW.tita.elefantesnaneblina",
-        "paths": ["*"]
+        "appIDs": [
+          "666CW7NGXW.tita.elefantesnaneblina"
+        ],
+        "paths": [
+          "*"
+        ],
+        "components": [
+          {
+            "/": "/*"
+          }
+        ]
       }
+    ]
+  },
+  "webcredentials": {
+    "apps": [
+      "666CW7NGXW.tita.elefantesnaneblina"
     ]
   }
 }
