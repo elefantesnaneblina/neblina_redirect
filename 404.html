@@ -37,7 +37,7 @@
             background-color: #FCC900;
             color: #001D3D;
             border: none;
-            border-radius: 4px; /* Alterado para 4px */
+            border-radius: 4px;
             padding: 12px 25px;
             font-size: 16px;
             font-weight: bold;
@@ -71,7 +71,7 @@
             flex-direction: column;
             gap: 15px;
             width: 100%;
-            max-width: 260px; /* Aumentado para botões maiores */
+            max-width: 260px;
         }
         .store-btn {
             padding: 10px;
@@ -80,10 +80,9 @@
             justify-content: center;
             text-decoration: none;
             color: white;
-            /* Removido o border */
         }
         .store-btn img {
-            height: 36px; /* Aumentado o tamanho das imagens */
+            height: 36px;
         }
     </style>
     <script>
@@ -91,52 +90,51 @@
         const APP_STORE_URL = "https://apps.apple.com/br/app/6547834238";
         const PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=tita.elefantesnaneblina";
         
-        // Timer para verificar se o app abriu
+        // Variáveis para controle
         let redirectTimer;
+        let pageBlurred = false;
         
-        // Função para tentar abrir o app
-        function tryOpenApp() {
-            // Limpar qualquer timer existente
+        // Quando a página perde o foco, o app provavelmente abriu
+        window.addEventListener('blur', function() {
+            pageBlurred = true;
             if (redirectTimer) {
                 clearTimeout(redirectTimer);
             }
-            
-            // Tenta abrir o app com a URL atual
-            const currentUrl = window.location.href;
-            window.location.href = currentUrl;
-            
-            // O timer só vai executar se o app não abrir (não perder o foco)
-            redirectTimer = setTimeout(handleAppNotInstalled, 1500);
-        }
+        });
         
-        // Função para lidar com o caso do app não estar instalado
-        function handleAppNotInstalled() {
+        // Redirecionar para a loja apropriada
+        function redirectToStore() {
+            // Se a página perdeu o foco, não redirecionamos
+            if (pageBlurred) return;
+            
             const userAgent = navigator.userAgent || navigator.vendor || window.opera;
             
-            // Redireciona para a loja apropriada
             if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
                 window.location.href = APP_STORE_URL;
             } else if (/android/i.test(userAgent)) {
                 window.location.href = PLAY_STORE_URL;
             }
-            // Para desktop, a página já mostra os links das lojas
         }
         
-        // Configura eventos quando a página carregar
-        window.onload = function() {
-            // Primeiro tenta abrir o app automaticamente
-            tryOpenApp();
+        // Iniciar quando a página carregar
+        window.addEventListener('load', function() {
+            // Universal Links/App Links já terão tentado abrir o app automaticamente
+            // Aguardamos alguns segundos e, se a página ainda estiver visível, 
+            // assumimos que o app não está instalado
+            redirectTimer = setTimeout(redirectToStore, 2500);
             
-            // Configura o botão para tentar novamente
-            document.getElementById('openAppBtn').addEventListener('click', tryOpenApp);
-            
-            // Se a página perder o foco, o app provavelmente abriu
-            window.onblur = function() {
+            // O botão tenta novamente usando o mesmo mecanismo
+            document.getElementById('openAppBtn').addEventListener('click', function() {
+                // Resetar as variáveis de controle
+                pageBlurred = false;
                 if (redirectTimer) {
                     clearTimeout(redirectTimer);
                 }
-            };
-        };
+                
+                // Aguardar novamente para ver se o app abre
+                redirectTimer = setTimeout(redirectToStore, 2500);
+            });
+        });
     </script>
 </head>
 <body>
