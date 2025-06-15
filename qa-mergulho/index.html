@@ -1,1 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Q&A Mergulho</title>
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Urbanist', sans-serif;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            width: 100%;
+            min-height: 100vh;
+            background-image: url('https://redirect.neblina.app/qa-mergulho/bg_qa_mergulho.png');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+            align-items: center;
+        }
+        
+        .action-button {
+            width: 276px;
+            height: 81px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            cursor: pointer;
+        }
+        
+        .action-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        .action-button:active {
+            transform: translateY(0);
+        }
+        
+        .buy-button {
+            background-color: #FCC900;
+        }
+        
+        .register-button {
+            background-color: #FDE68C;
+        }
+        
+        .button-text {
+            color: #000000;
+            font-size: 20px;
+            font-weight: 700;
+            text-align: center;
+            line-height: 1.3;
+            white-space: pre-line;
+        }
+        
+        .info-section {
+            width: 100%;
+            background: linear-gradient(180deg, #05407C 0%, #071626 100%);
+            border-radius: 46px 46px 0 0;
+            padding: 32px;
+            opacity: 0.9;
+        }
+        
+        .info-content {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .info-title {
+            color: white;
+            font-size: 26px;
+            font-weight: 700;
+            text-align: center;
+        }
+        
+        .info-text {
+            color: white;
+            font-size: 16px;
+            font-weight: 500;
+            line-height: 1.6;
+            white-space: pre-line;
+        }
+        
+        @media (max-width: 768px) {
+            .action-button {
+                width: 90%;
+                max-width: 276px;
+            }
+            
+            .info-section {
+                padding: 24px;
+            }
+            
+            .info-title {
+                font-size: 22px;
+            }
+            
+            .info-text {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="main-content">
+            <div class="button-container">
+                <a href="https://redirect.neblina.app/cursoSingle?cursoRef=q0RsWC8sXVmsOq9fd7hT" 
+                   class="action-button buy-button" 
+                   target="_blank">
+                    <span class="button-text">Quero comprar 
+o Mergulho</span>
+                </a>
+                
+                <a href="https://wa.me/5511916571071?text=Quero%20me%20inscrever" 
+                   class="action-button register-button" 
+                   target="_blank">
+                    <span class="button-text">Já tenho e 
+quero me inscrever</span>
+                </a>
+            </div>
+        </div>
+        
+        <div class="info-section">
+            <div class="info-content">
+                <h2 class="info-title">Como será o Q&A?</h2>
+                <p class="info-text">• Encontro único, coletivo e online com até 500 participantes para quem comprar até o dia X;
 
+• O evento será ao vivo e moderado;
+
+• As perguntas serão enviadas via chat e selecionadas pelos moderadores;
+
+• Serão respondidas apenas perguntas relacionadas ao tema Alquimia da Alma;
+
+• Duração: 60 minutos;
+
+• Data: xx, às xxh
+
+• Para quem adquiriu o Mergulho, a gravação do encontro ficará disponível no Neblina após essa data.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
